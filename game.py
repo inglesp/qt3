@@ -12,7 +12,7 @@ class Board(object):
 
 class Game(object):
     def __init__(self):
-        self.b = Board()
+        self.board = Board()
 
     def play(self):
         for turn in range(1, 10):
@@ -23,7 +23,7 @@ class Game(object):
                 choices = board.get_cycle_breaker()
                 choice = self.get_user_choice(choices)
                 board.collapse(choice)
-                self.display()
+                self.board.display()
             board.check_winner()
 
 
