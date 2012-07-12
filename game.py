@@ -11,7 +11,7 @@ class Board(object):
         self.tok_map[turn] = (pos1, pos2)
 
     def display(self):
-        print self.pretty(self.lines(self.flat()))
+        self.pretty(self.lines(self.flat()))
 
     def flat(self):
         base = [[], [], [],
