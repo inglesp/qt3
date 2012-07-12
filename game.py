@@ -15,6 +15,7 @@ class Board(object):
         self.tok_map = {}
 
     def move(self, turn, pos1, pos2):
+        print self.pos_map
         self.pos_map[pos1].add(turn)
         self.pos_map[pos2].add(turn)
         self.tok_map[turn] = (pos1, pos2)
@@ -28,6 +29,50 @@ class Board(object):
                 if all(v == 'O' for v in values):
                     return 'O'
 
+    def display(self):
+        self.pretty(self.lines(self.flat()))
+
+    def flat(self):
+        base = [[], [], [],
+                [], [], [],
+                [], [], []]
+        for pos, turn in self.pos_map.items():
+            base[pos-1].extend(list(turn))
+        return base
+
+    def lines(self, flatted):
+        lined = []
+        lined.append(flatted[:3])
+        lined.append(flatted[3:6])
+        lined.append(flatted[6:9])
+        return lined
+
+    def pretty(self, lines):
+        for line in lines:
+            print " " * (15 * 3 + 10)
+            for i, col in enumerate(line):
+                print ",".join(self.named(p) for p in col).center(30),
+                if i < 2:
+                    print "|",
+            print
+            print
+            print "-" * (30 * 3 + 10)
+
+    def named(self, n):
+#        return ("O" if n % 2 == 0 else "X") + str(n)
+        return n
+
+def test_display():
+    b = Board()
+    b.move(1, 2, 3)
+    b.move(2, 4, 5)
+    b.move(3, 8, 9)
+    flatted = b.flat()
+    lines = b.lines(flatted)
+
+    b.display()
+
+    print "passing unit kind of tests"
 
 class Game(object):
     def __init__(self):
@@ -59,13 +104,7 @@ class Game(object):
 
 if __name__ == '__main__':
     b = Board()
-    b.pos_map[1] = 'X'
-    b.pos_map[2] = 'O'
-    b.pos_map[3] = 'O'
-    b.pos_map[4] = 'X'
-    b.pos_map[5] = 'O'
-    b.pos_map[6] = 'O'
-    b.pos_map[7] = 'O'
-    b.pos_map[8] = 'O'
-    b.pos_map[9] = 'O'
     print b.check_winner()
+    b.move(1, 2, 3)
+    print b.__dict__
+    test_display()
